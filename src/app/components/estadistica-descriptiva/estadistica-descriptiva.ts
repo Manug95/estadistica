@@ -27,8 +27,8 @@ export class EstadisticaDescriptiva {
     const objResultados: {[key: string]: number | string[]} = this.analisisService.analisisCompleto(datosFormateados);
     const arrayResultados = this.ordenarDatos(objResultados);
 
-    // this.resultados.set(arrayResultados);
-    this.resultados.update(arr => [...arr, ...arrayResultados]);
+    this.resultados.set(arrayResultados);
+    // this.resultados.update(arr => [...arr, ...arrayResultados]);
   }
 
   formatearDatos(datos: string): number[] {
@@ -44,7 +44,7 @@ export class EstadisticaDescriptiva {
       "media", "mediana", "moda", "q1", "q2", "q3", 
       "rango", "rangoIntercuartilico", "variancia", "desviacionEstandar", "coeficienteDeVariacion", 
       "max", "min", "n"
-    ];//, "baseInferior", "baseSuperior"
+    ];
   
     return Object.keys(data)
       .map(k => orden.findIndex(i => i === k))
