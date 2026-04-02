@@ -1,0 +1,61 @@
+<h1 class="text-center">Estadística Descriptiva</h1>
+
+<p class="text-center">Los calculos realizado son para observaciones de una MUESTRA</p>
+
+<div class="d-flex flex-column align-items-center justify-content-center my-5">
+    <!-- <p>Ingrese los datos</p> -->
+    <div class="mb-3 d-flex flex-column align-items-center justify-content-center">
+        <label 
+            for="datos" 
+            class="form-label" 
+            [ngbTooltip]="tooltipDatos" 
+            placement="top"
+            >
+            Ingrese los datos
+        </label>
+        <textarea name="datos" class="form-control" id="datos" cols="100" rows="5" #datos></textarea>
+    </div>
+    <div class="mb-3 d-flex flex-column align-items-center justify-content-center">
+        <label 
+            for="separador" 
+            class="form-label"
+            [ngbTooltip]="tooltipSeparador"
+            >Separador</label>
+        <input type="text" class="form-control" id="separador" [value]="separador()"
+            (keyup)="actualizarSeparador(separadorInput.value)" #separadorInput>
+    </div>
+    <button id="calcular" class="btn btn-primary mt-3" (click)="calcular(datos.value)">Calcular</button>
+</div>
+
+<div class="table-responsive-lg">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Media</th>
+                <th scope="col">Mediana</th>
+                <th scope="col">Moda</th>
+                <th scope="col">Q1</th>
+                <th scope="col">Q2</th>
+                <th scope="col">Q3</th>
+                <th scope="col">R</th>
+                <th scope="col">R.I</th>
+                <th scope="col">Variancia</th>
+                <th scope="col">Desviación E.</th>
+                <th scope="col">C.V</th>
+                <th scope="col">Máx</th>
+                <th scope="col">Mín</th>
+                <!-- <th scope="col">B.I</th>
+                <th scope="col">B.S</th> -->
+                <th scope="col">n</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <!-- <td *ngFor="let dato of resultados">{{ esArreglo(dato) ? muchasModas(dato) : dato }}</td> -->
+                @for(dato of resultados(); track dato) {
+                <td>{{ esArreglo(dato) ? muchasModas(dato) : dato }}</td>
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>
