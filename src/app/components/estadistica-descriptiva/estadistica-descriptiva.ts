@@ -25,8 +25,8 @@ export class EstadisticaDescriptiva {
   private analisisService = inject(EstadisticaDescriptivaService);
 
   datosForm = new FormGroup({
-    datos: new FormControl("2 – 4 – 7 – 10 – 10 – 10 – 12 – 12 – 14 – 15", Validators.required),
-    separador: new FormControl(" – ", Validators.required)
+    datos: new FormControl("", Validators.required),
+    separador: new FormControl(";", Validators.required)
   });
 
   get datos() {
