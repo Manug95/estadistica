@@ -1,59 +1,56 @@
-# Estadistica
+# 📊 Proyecto de Estadística - Facultad
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.6.
+Este proyecto es una aplicación web desarrollada con **Angular** diseñada para automatizar el procesamiento de datos estadísticos. Permite realizar cálculos de frecuencia y obtener métricas fundamentales de manera dinámica, facilitando la resolución de ejercicios académicos.
 
-## Development server
+## 🚀 Funcionalidades Principales
+* **Cálculo de Frecuencias:** Generación automática de tablas de frecuencia (absoluta, relativa y acumulada).
+* **Medidas de Tendencia Central:** Cálculo de media, mediana y moda.
+* **Medidas de Dispersión:** Varianza, desviación estándar y coeficiente de variación.
+* **Interfaz Intuitiva:** Diseño estructurado para la carga rápida de muestras de datos.
+* **Estilo Profesional:** Implementación de **Bootstrap** para un diseño limpio y responsivo.
 
-To start a local development server, run:
+## 🛠️ Tecnologías Utilizadas
+* **Angular** (Framework principal)
+* **TypeScript** (Lógica de los algoritmos estadísticos)
+* **HTML5 & CSS3** (Estructura y diseño visual)
+* **Bootstrap** (Sistema de estilos y componentes)
 
+---
+
+## 📋 Requisitos Previos
+
+Antes de comenzar, asegúrate de tener instalado:
+
+1.  **Node.js** (Versión LTS recomendada).
+2.  **Angular CLI**: Si no lo tienes, instálalo con el comando:
+    ```bash
+    npm install -g @angular/cli
+    ```
+
+---
+
+## ⚙️ Instalación y Ejecución
+
+Sigue estos pasos para ejecutar el proyecto en tu entorno local:
+
+### 1. Clonar el repositorio
 ```bash
-ng serve
+git clone https://github.com/Manug95/estadistica.git
+cd estadistica
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+### 2. Instalar Dependencias
+Este comando descargará todas las librerías necesarias (Angular, Bootstrap, etc.) especificadas en el archivo package.json:
 ```bash
-ng generate component component-name
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+### 3. Iniciar el servidor de desarrollo
+Lanza la aplicación localmente:
 ```bash
-ng generate --help
+ng serve -o
 ```
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### 4. Visualizar la app
+Una vez finalizada la compilación, abre tu navegador en: http://localhost:4200/
+La página se actualizará automáticamente cada vez que realices un cambio en el código.
