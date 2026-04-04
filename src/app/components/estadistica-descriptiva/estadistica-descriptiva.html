@@ -2,8 +2,7 @@
 
 <p class="text-center">Los calculos realizado son para observaciones de una MUESTRA</p>
 
-<div class="d-flex flex-column align-items-center justify-content-center my-5">
-    <!-- <p>Ingrese los datos</p> -->
+<form action="" [formGroup]="datosForm" (ngSubmit)="calcular()" class="d-flex flex-column align-items-center justify-content-center my-5">
     <div class="mb-3 d-flex flex-column align-items-center justify-content-center">
         <label 
             for="datos" 
@@ -13,7 +12,22 @@
             >
             Ingrese los datos
         </label>
-        <textarea name="datos" class="form-control" id="datos" cols="100" rows="5" #datos></textarea>
+        <textarea 
+            name="datos" 
+            class="form-control" 
+            id="datos" 
+            cols="100" 
+            rows="5" 
+            formControlName="datos" 
+            [class.is-invalid]="datos!.invalid && (datos!.dirty || datos!.touched)"
+            ></textarea>
+        @if (datos!.invalid && (datos!.dirty || datos!.touched)) {
+            <div class="invalid-feedback">
+                @if (datos!.hasError('required')) {
+                    <span>Los datos de las observaciones son requeridas.</span>
+                }
+            </div>
+        }
     </div>
     <div class="mb-3 d-flex flex-column align-items-center justify-content-center">
         <label 
@@ -21,39 +35,48 @@
             class="form-label"
             [ngbTooltip]="tooltipSeparador"
             >Separador</label>
-        <input type="text" class="form-control" id="separador" [value]="separador()"
-            (keyup)="actualizarSeparador(separadorInput.value)" #separadorInput>
+        <input 
+            type="text" 
+            class="form-control d-block" 
+            id="separador" 
+            formControlName="separador"
+            [class.is-invalid]="separador!.invalid && (separador!.dirty || separador!.touched)"
+            >
+        @if (separador && separador.invalid && (separador.dirty || separador.touched)) {
+            <div class="invalid-feedback">
+                @if (separador.hasError('required')) {
+                    <span>Se requiere especificar el separador de las observaciones.</span>
+                }
+            </div>
+        }
     </div>
-    <button id="calcular" class="btn btn-primary mt-3" (click)="calcular(datos.value)">Calcular</button>
-</div>
+    <div class="d-flex align-items-center justify-content-center">
+        <input type="submit" id="calcular" class="btn btn-primary mt-3 mx-auto" [disabled]="!datosForm.valid" value="calcular"/>
+    </div>
+</form>
 
 <div class="table-responsive-lg">
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th scope="col">Media</th>
-                <th scope="col">Mediana</th>
-                <th scope="col">Moda</th>
-                <th scope="col">Q1</th>
-                <th scope="col">Q2</th>
-                <th scope="col">Q3</th>
-                <th scope="col">R</th>
-                <th scope="col">R.I</th>
-                <th scope="col">Variancia</th>
-                <th scope="col">Desviación E.</th>
-                <th scope="col">C.V</th>
-                <th scope="col">Máx</th>
-                <th scope="col">Mín</th>
-                <th scope="col">n</th>
+                <th scope="col">Muestras</th>
+                @for(columna of diccionarioColumnasTabla.values(); track columna) {
+                    <th scope="col">{{ columna }}</th>
+                }
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <!-- <td *ngFor="let dato of resultados">{{ esArreglo(dato) ? muchasModas(dato) : dato }}</td> -->
-                @for(dato of resultados(); track dato) {
-                <td>{{ esArreglo(dato) ? muchasModas(dato) : dato }}</td>
-                }
-            </tr>
+            @for(datos of resultados(); track datos; let idx = $index) {
+                <tr>
+                    <td class="fw-bold">Muestra {{idx + 1}}</td>
+                    @for(dato of datos; track dato) {
+                        <td>{{ esArreglo(dato) ? muchasModas(dato) : dato }}</td>
+                    }
+                </tr>
+            }
         </tbody>
     </table>
+</div>
+<div class="w-100 d-flex justify-content-end">
+    <button type="button" (click)="borrarDatos()" class="btn btn-primary">Borrar Datos</button>
 </div>

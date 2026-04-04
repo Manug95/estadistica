@@ -133,7 +133,7 @@ export class EstadisticaDescriptivaService {
       rangoIntercuartilico: this.rangoIntercuartilico(data),
       variancia: this.variancia(data),
       desviacionEstandar: this.desviacionEstandar(data),
-      coeficienteDeVariacion: this.coeficienteDeVariacion(data),
+      coeficienteDeVariacion: [this.coeficienteDeVariacion(data) + "%"],
       max: this.mathService.valorMaximo(data),
       min: this.mathService.valorMinimo(data)
     }

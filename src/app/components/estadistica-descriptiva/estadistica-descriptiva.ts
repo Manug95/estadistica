@@ -2,55 +2,74 @@ import { Component, inject, signal } from '@angular/core';
 
 import { EstadisticaDescriptivaService } from '../../services/estadistica-descriptiva-service';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormControl, ReactiveFormsModule, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-estadistica-descriptiva',
-  imports: [NgbTooltipModule],
+  imports: [NgbTooltipModule, ReactiveFormsModule, CommonModule],
   templateUrl: './estadistica-descriptiva.html',
   styleUrl: './estadistica-descriptiva.css',
 })
 export class EstadisticaDescriptiva {
-  resultados = signal<(number | string[])[]>([]);
-  separador = signal(";");
+  resultados = signal<((string[] | number)[])[]>([]);
   tooltipDatos = "Los datos de las observaciones separados por el \"Separador\"";
   tooltipSeparador = "Caracter que separa las diferentes observaciones una de la otra";
 
+  diccionarioColumnasTabla = new Map([
+    ["media", "Media"], ["mediana", "Mediana"], ["moda", "Moda"], ["q1", "Q1"], ["q2", "Q2"], ["q3", "Q3"], ["rango", "R"],
+    ["rangoIntercuartilico", "R.I"], ["variancia", "Variancia"], ["desviacionEstandar", "Desv. E."], ["coeficienteDeVariacion", "C.V"],
+    ["max", "Máx"], ["min", "Min"], ["n", "n"]
+  ]);
+
   private analisisService = inject(EstadisticaDescriptivaService);
 
-  actualizarSeparador(nuevoValor: string): void {
-    this.separador.set(nuevoValor);
+  datosForm = new FormGroup({
+    datos: new FormControl("2 – 4 – 7 – 10 – 10 – 10 – 12 – 12 – 14 – 15", Validators.required),
+    separador: new FormControl(" – ", Validators.required)
+  });
+
+  get datos() {
+    return this.datosForm.get("datos");
   }
 
-  calcular(data: string): void {
-    const datosFormateados = this.formatearDatos(data);
-    datosFormateados.sort((a,b) => a-b);
-    const objResultados: {[key: string]: number | string[]} = this.analisisService.analisisCompleto(datosFormateados);
-    const arrayResultados = this.ordenarDatos(objResultados);
+  get separador() {
+    return this.datosForm.get("separador");
+  }
 
-    this.resultados.set(arrayResultados);
-    // this.resultados.update(arr => [...arr, ...arrayResultados]);
+  calcular(): void {
+    const data = this.datosForm.value.datos;
+
+    if (data) {
+      const datosFormateados = this.formatearDatos(data);
+      datosFormateados.sort((a,b) => a-b);
+      const objResultados: {[key: string]: number | string[]} = this.analisisService.analisisCompleto(datosFormateados);
+      const arrayResultados = this.ordenarDatos(objResultados);
+  
+      this.resultados.update(arr => { arr.push(arrayResultados); return arr; });
+    }
   }
 
   formatearDatos(datos: string): number[] {
-    const separador = this.separador;
-    return datos
-      .split(separador())
+    const separator = this.datosForm.value.separador;
+    
+    if (separator) {
+      return datos
+      .split(separator)
       .filter(x => x !== "")
       .map(x => +x);
+    } else 
+      return [];
   }
 
   ordenarDatos(data: {[key: string]: number | string[]}): (number | string[])[] {
-    const orden = [
-      "media", "mediana", "moda", "q1", "q2", "q3", 
-      "rango", "rangoIntercuartilico", "variancia", "desviacionEstandar", "coeficienteDeVariacion", 
-      "max", "min", "n"
-    ];
-  
-    return Object.keys(data)
-      .map(k => orden.findIndex(i => i === k))
-      .sort((a,b) => a-b)
-      .map(x => orden[x])
-      .map(x => data[x]);//{[key: string]: number | string[]}
+    const array: (number | string[])[] = [];
+
+    [...this.diccionarioColumnasTabla.keys()].forEach((c,i) => {
+      array[i] = data[c];
+    });
+
+    return array;
   }
 
   esArreglo(data: string[] | number): boolean {
@@ -62,5 +81,10 @@ export class EstadisticaDescriptiva {
       return data.join(";");
     else 
       return data.toString();
+  }
+
+  borrarDatos() {
+    this.resultados.update(_ => []);
+    this.datosForm.setValue({ datos: "", separador: ";" });
   }
 }
