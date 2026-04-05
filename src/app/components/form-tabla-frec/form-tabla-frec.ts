@@ -1,5 +1,5 @@
 import { Component, inject, output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatosForm } from '../../models/DatosForm';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 

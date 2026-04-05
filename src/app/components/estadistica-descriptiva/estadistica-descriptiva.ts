@@ -31,18 +31,14 @@ export class EstadisticaDescriptiva {
   private datosForm: DatosForm = new DatosForm("", ";");
   private analisisService = inject(EstadisticaDescriptivaService);
 
-  recibirdatos(datos: string) {
-    
-  }
-
   calcular(data: DatosForm): void {
     this.datosForm = data;
 
     if (this.datosForm.datos) {
       const datosFormateados = this.formatearDatos(this.datosForm.datos);
       datosFormateados.sort((a,b) => a-b);
-      const objResultados: {[key: string]: number | string[]} = this.analisisService.analisisCompleto(datosFormateados);
-      const arrayResultados = this.ordenarDatos(objResultados);
+      const resultadoAnalisis: {[key: string]: number | string[]} = this.analisisService.analisisCompleto(datosFormateados);
+      const arrayResultados = this.ordenarDatos(resultadoAnalisis);
   
       this.resultados.update(arr => { arr.push(arrayResultados); return arr; });
     }
@@ -59,13 +55,7 @@ export class EstadisticaDescriptiva {
   }
 
   ordenarDatos(data: {[key: string]: number | string[]}): (number | string[])[] {
-    const array: (number | string[])[] = [];
-
-    [...this.diccionarioColumnasTabla.keys()].forEach((c,i) => {
-      array[i] = data[c];
-    });
-
-    return array;
+    return [...this.diccionarioColumnasTabla.keys()].map(c => data[c]);
   }
 
   esArreglo(data: string[] | number): boolean {
