@@ -1,20 +1,19 @@
-import { Component, inject, signal } from '@angular/core';
-
+import { Component, inject, signal, ViewChild } from '@angular/core';
+import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { EstadisticaDescriptivaService } from '../../services/estadistica-descriptiva-service';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl, ReactiveFormsModule, FormGroup, Validators } from '@angular/forms';
+import { FormObservaciones } from '../form-observaciones/form-observaciones';
+import { FormTablaFrec } from '../form-tabla-frec/form-tabla-frec';
 import { CommonModule } from '@angular/common';
+import { DatosForm } from '../../models/DatosForm';
 
 @Component({
   selector: 'app-estadistica-descriptiva',
-  imports: [NgbTooltipModule, ReactiveFormsModule, CommonModule],
+  imports: [CommonModule, FormObservaciones, FormTablaFrec, ReactiveFormsModule],
   templateUrl: './estadistica-descriptiva.html',
   styleUrl: './estadistica-descriptiva.css',
 })
 export class EstadisticaDescriptiva {
   resultados = signal<((string[] | number)[])[]>([]);
-  tooltipDatos = "Los datos de las observaciones separados por el \"Separador\"";
-  tooltipSeparador = "Caracter que separa las diferentes observaciones una de la otra";
 
   diccionarioColumnasTabla = new Map([
     ["media", "Media"], ["mediana", "Mediana"], ["moda", "Moda"], ["q1", "Q1"], ["q2", "Q2"], ["q3", "Q3"], ["rango", "R"],
@@ -22,26 +21,25 @@ export class EstadisticaDescriptiva {
     ["max", "Máx"], ["min", "Min"], ["n", "n"]
   ]);
 
-  private analisisService = inject(EstadisticaDescriptivaService);
+  @ViewChild(FormObservaciones) formObservaciones!: FormObservaciones;
+  @ViewChild(FormTablaFrec) formTablaFrec!: FormTablaFrec;
 
-  datosForm = new FormGroup({
-    datos: new FormControl("", Validators.required),
-    separador: new FormControl(";", Validators.required)
+  radiosForm = new FormGroup({
+    estado: new FormControl('clasico')
   });
 
-  get datos() {
-    return this.datosForm.get("datos");
+  private datosForm: DatosForm = new DatosForm("", ";");
+  private analisisService = inject(EstadisticaDescriptivaService);
+
+  recibirdatos(datos: string) {
+    
   }
 
-  get separador() {
-    return this.datosForm.get("separador");
-  }
+  calcular(data: DatosForm): void {
+    this.datosForm = data;
 
-  calcular(): void {
-    const data = this.datosForm.value.datos;
-
-    if (data) {
-      const datosFormateados = this.formatearDatos(data);
+    if (this.datosForm.datos) {
+      const datosFormateados = this.formatearDatos(this.datosForm.datos);
       datosFormateados.sort((a,b) => a-b);
       const objResultados: {[key: string]: number | string[]} = this.analisisService.analisisCompleto(datosFormateados);
       const arrayResultados = this.ordenarDatos(objResultados);
@@ -51,11 +49,9 @@ export class EstadisticaDescriptiva {
   }
 
   formatearDatos(datos: string): number[] {
-    const separator = this.datosForm.value.separador;
-    
-    if (separator) {
+    if (this.datosForm.separador) {
       return datos
-      .split(separator)
+      .split(this.datosForm.separador)
       .filter(x => x !== "")
       .map(x => +x);
     } else 
@@ -85,6 +81,9 @@ export class EstadisticaDescriptiva {
 
   borrarDatos() {
     this.resultados.update(_ => []);
-    this.datosForm.setValue({ datos: "", separador: ";" });
+    if (this.formObservaciones) 
+      this.formObservaciones.reestablecerCampos();
+    if (this.formTablaFrec)
+      this.formTablaFrec.reestablecerCampos();
   }
 }

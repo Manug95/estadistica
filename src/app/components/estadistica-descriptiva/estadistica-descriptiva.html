@@ -1,59 +1,20 @@
 <h1 class="text-center">Estadística Descriptiva</h1>
 
-<p class="text-center">Los calculos realizado son para observaciones de una MUESTRA</p>
+<p class="text-center">Los calculos realizados son para observaciones de una MUESTRA</p>
 
-<form action="" [formGroup]="datosForm" (ngSubmit)="calcular()" class="d-flex flex-column align-items-center justify-content-center my-5">
-    <div class="mb-3 d-flex flex-column align-items-center justify-content-center">
-        <label 
-            for="datos" 
-            class="form-label" 
-            [ngbTooltip]="tooltipDatos" 
-            placement="top"
-            >
-            Ingrese los datos
-        </label>
-        <textarea 
-            name="datos" 
-            class="form-control" 
-            id="datos" 
-            cols="100" 
-            rows="5" 
-            formControlName="datos" 
-            [class.is-invalid]="datos!.invalid && (datos!.dirty || datos!.touched)"
-            ></textarea>
-        @if (datos!.invalid && (datos!.dirty || datos!.touched)) {
-            <div class="invalid-feedback">
-                @if (datos!.hasError('required')) {
-                    <span>Los datos de las observaciones son requeridas.</span>
-                }
-            </div>
-        }
-    </div>
-    <div class="mb-3 d-flex flex-column align-items-center justify-content-center">
-        <label 
-            for="separador" 
-            class="form-label"
-            [ngbTooltip]="tooltipSeparador"
-            >Separador</label>
-        <input 
-            type="text" 
-            class="form-control d-block" 
-            id="separador" 
-            formControlName="separador"
-            [class.is-invalid]="separador!.invalid && (separador!.dirty || separador!.touched)"
-            >
-        @if (separador && separador.invalid && (separador.dirty || separador.touched)) {
-            <div class="invalid-feedback">
-                @if (separador.hasError('required')) {
-                    <span>Se requiere especificar el separador de las observaciones.</span>
-                }
-            </div>
-        }
-    </div>
-    <div class="d-flex align-items-center justify-content-center">
-        <input type="submit" id="calcular" class="btn btn-primary mt-3 mx-auto" [disabled]="!datosForm.valid" value="calcular"/>
-    </div>
+<label for="" class="form-label fw-bold">Elija la presentación de los datos:</label>
+<form [formGroup]="radiosForm">
+  <input id="clasico" type="radio" formControlName="estado" value="clasico" class="form-check-input">
+  <label for="clasico" class="form-check-label mx-1"> Clásica</label>
+  <input id="tfrec" type="radio" formControlName="estado" value="tabla.frec" class="form-check-input">
+  <label for="tfrec" class="form-check-label mx-1"> Por Frecuencias</label>
 </form>
+
+@if(radiosForm.get('estado')?.value === 'clasico') {
+    <app-form-observaciones (datosOutput)="calcular($event)"></app-form-observaciones>
+} @else {
+    <app-form-tabla-frec (datosOutput)="calcular($event)"></app-form-tabla-frec>
+}
 
 <div class="table-responsive-lg">
     <table class="table table-striped table-bordered">

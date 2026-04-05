@@ -1,0 +1,44 @@
+<form class="my-3" [formGroup]="formTablaFrec" (ngSubmit)="onSubmit()">
+    <div class="d-flex justify-content-center align-items-center">
+        <label for="" class="form-label">
+            Ingrese los datos
+        </label>
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+        <div>
+            <div class="fw-bold p-2">
+                X<small><sub>i</sub></small>
+            </div>
+            <div class="fw-bold p-2">
+                f<small><sub>i</sub></small>
+            </div>
+        </div>
+        <div formArrayName="observaciones" class="d-flex justify-content-center align-items-center">
+            @for(observacion of observaciones.controls; track $index; let i = $index) {
+                <div [formGroupName]="i">
+                    <div class="border">
+                        <input type="text" class="form-control" size="2" formControlName="valor"
+                            [class.is-invalid]="observacion.get('valor')!.invalid && (observacion.get('valor')!.dirty || observacion.get('valor')!.touched)"/>
+                    </div>
+                    <div class="border">
+                        <input type="text" class="form-control" size="2" formControlName="frecuencia"
+                            [class.is-invalid]="observacion.get('frecuencia')!.invalid && (observacion.get('frecuencia')!.dirty || observacion.get('frecuencia')!.touched)"/>
+                    </div>
+                </div>
+            }
+        </div>
+        <div>
+            <button type="button" (click)="addObservacion()" class="btn btn-outline-primary ms-2" ngbTooltip="Agregar observación" placement="right">+</button>
+        </div>
+    </div>
+    <!-- @if (formTablaFrec.invalid && (formTablaFrec.dirty || formTablaFrec.touched)) {
+        <div class="text-danger text-center">
+            @if (tieneErroresRequeridos() && formTablaFrec.touched) {
+                <span>Hay campos requeridos sin completar.</span>
+            }
+        </div>
+    } -->
+    <div class="d-flex align-items-center justify-content-center">
+        <input type="submit" id="calcular" class="btn btn-primary mt-3 mx-auto" value="Calcular" [disabled]="!formTablaFrec.valid"/>
+    </div>
+</form>
