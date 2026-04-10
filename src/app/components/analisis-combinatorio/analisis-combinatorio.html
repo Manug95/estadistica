@@ -1,0 +1,81 @@
+<h1 class="text-center">Análisis Combinatorio</h1>
+
+<p class="text-center mt-3 text-success fw-bold">EL ALGORITMO DEL PROFE:</p>
+<div class="d-flex justify-content-center mt-1">
+    <ol class="border border-danger border-3 px-5 py-3">
+        <li>
+            <span>
+                ¿Trabajo con todos los elementos del conjunto?
+            </span>
+            <ul>
+                <li>
+                    <span class="fw-bold">Sí: </span>
+                    <span>Es una PERMUTACION</span>
+                </li>
+                <li>
+                    <span class="fw-bold">No: </span>
+                    <span>¿Interesa el orden?</span>
+                    <ul>
+                        <li>
+                            <span class="fw-bold">Sí: </span>
+                            <span>Es un ARREGLO</span>
+                        </li>
+                        <li>
+                            <span class="fw-bold">No: </span>
+                            <span>Es una COMBINACION</span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <span>¿Los elementos se pueden repetir?</span>
+            <ul>
+                <li>
+                    <span class="fw-bold">Sí: </span>
+                    <span>Es un análisis combinatorio con REPETICION</span>
+                </li>
+                <li>
+                    <span class="fw-bold">No: </span>
+                    <span>Es un análisis combinatorio SIMPLE</span>
+                </li>
+            </ul>
+        </li>
+    </ol>
+</div>
+
+<form class="row justify-content-evenly mt-3" [formGroup]="form">
+    <div class="col-sm-3">
+        <label for="operacion">Operación</label>
+        <select id="operacion" class="form-select" aria-label="Default select example" [value]="operacion" formControlName="operacion">
+            <option selected disabled value="-">Seleccionar operación</option>
+            <option value="arrSimp">Arreglo Simple</option>
+            <option value="combSimp">Combinación Simple</option>
+            <option value="permSimp">Permutación Simple</option>
+            <option value="arrRep">Arreglo c/Rep</option>
+            <option value="combRep">Combinación c/Rep</option>
+            <option value="permRep">Permutación c/Rep</option>
+        </select>
+    </div>
+</form>
+
+@switch (operacion?.value) {
+    @case ("arrSimp") {
+        <app-arreglo-simple></app-arreglo-simple>
+    }
+    @case ("combSimp") {
+        <app-combinacion-simple></app-combinacion-simple>
+    }
+    @case ("permSimp") {
+        <app-permutacion-simple></app-permutacion-simple>
+    }
+    @case ("arrRep") {
+        <app-arreglo-c-repeticion></app-arreglo-c-repeticion>
+    }
+    @case ("combRep") {
+        <app-combinacion-c-repeticion></app-combinacion-c-repeticion>
+    }
+    @case ("permRep") {
+        <app-permutacion-c-repeticion></app-permutacion-c-repeticion>
+    }
+}

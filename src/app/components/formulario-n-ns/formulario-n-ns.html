@@ -1,0 +1,48 @@
+<form class="row justify-content-evenly" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="col-sm-3">
+        <label for="n" class="form-label">n</label>
+        <input 
+            id="n" 
+            type="text" 
+            class="form-control" 
+            [class.is-invalid]="n!.invalid && (n!.dirty || n!.touched)" 
+            formControlName="n">
+        @if (n!.invalid && (n!.dirty || n!.touched)) {
+            <div class="invalid-feedback">
+                @if (n!.hasError('required')) {
+                    <span>Ingrese el valor de n.</span>
+                }
+                @else if (n!.hasError('noEsUnBigInt')) {
+                    <span>Valor incorrecto.</span>
+                }
+                @else if (n!.hasError('esMenorIgualACero')) {
+                    <span>n NO puede ser menor o igual a 0.</span>
+                }
+            </div>
+        }
+    </div>
+    <div class="col-sm-3">
+        <label for="p" class="form-label" ngbTooltip="Ingrese los Ns separados por ," placement="top">N1, N2, ..., Nk</label>
+        <input 
+            id="p" 
+            type="text" 
+            class="form-control" 
+            [class.is-invalid]="enes!.invalid && (enes!.dirty || enes!.touched)"
+            formControlName="enes"
+            placeholder="Valores separados por ,">
+        @if (enes!.invalid && (enes!.dirty || enes!.touched)) {
+            <div class="invalid-feedback">
+                @if (enes!.hasError('required')) {
+                    <span>Ingrese los valores para las diferentes N<sub>k</sub>.</span>
+                }
+                @else if (enes!.hasError('formatoIncorrecto')) {
+                    <span>Formato incorrecto.</span>
+                }
+            </div>
+        }
+    </div>
+    <div class="col-sm-3 d-flex justify-content-around align-items-end">
+        <input type="submit" class="btn btn-primary" value="Calcular" [disabled]="!form.valid">
+        <button type="button" class="btn btn-secondary" (click)="resetearResultados()">Resetear</button>
+    </div>
+</form>

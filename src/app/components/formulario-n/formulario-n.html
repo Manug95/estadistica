@@ -1,0 +1,28 @@
+<form class="row justify-content-evenly" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="col-sm-3 offset-sm-3">
+        <label for="n" class="form-label">n</label>
+        <input 
+            id="n" 
+            type="text" 
+            class="form-control" 
+            [class.is-invalid]="n!.invalid && (n!.dirty || n!.touched)" 
+            formControlName="n">
+        @if (n!.invalid && (n!.dirty || n!.touched)) {
+            <div class="invalid-feedback">
+                @if (n!.hasError('required')) {
+                    <span>Ingrese el valor de n.</span>
+                }
+                @else if (n!.hasError('noEsUnBigInt')) {
+                    <span>Valor incorrecto.</span>
+                }
+                @else if (n!.hasError('esMenorIgualACero')) {
+                    <span>n NO puede ser menor o igual a 0.</span>
+                }
+            </div>
+        }
+    </div>
+    <div class="col-sm-4 d-flex justify-content-start align-items-end">
+        <input type="submit" class="btn btn-primary" value="Calcular" [disabled]="!form.valid">
+        <button type="button" class="btn btn-secondary ms-5" (click)="resetearResultados()">Resetear</button>
+    </div>
+</form>

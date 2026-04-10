@@ -1,0 +1,27 @@
+<div class="mt-5">
+    <app-formulario-n-ns (formValues)="calcular($event)" (resetear)="resetearResultados()"></app-formulario-n-ns>
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-center align-items-center mt-5 fs-3">
+                <span>
+                    P'
+                    <sub>
+                        {{ subN() }}
+                    </sub>
+                    @for (super of superindices(); track $index; let i = $index; let lastItem = $last) {
+                        <sup>
+                            {{ super }}
+                            <!-- <sub>
+                                {{ i+1 }}
+                            </sub> -->
+                            @if (!lastItem) {
+                                ,
+                            }
+                        </sup>
+                    }
+                    = {{ resultado() }}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

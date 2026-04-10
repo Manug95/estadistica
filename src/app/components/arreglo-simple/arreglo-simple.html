@@ -1,0 +1,11 @@
+<div class="mt-5">
+    <app-formulario-np (formValues)="calcular($event)" (resetear)="resetearResultados()" [nMenorIgualP]="nMenorIgualP" [pMayorIgualN]="pMayorIgualN"></app-formulario-np>
+    
+    <div class="row">
+        <div class="col">
+            <div class="d-flex justify-content-center align-items-center mt-5 fs-3">
+                <span>A<sub>{{ subN() }},{{ subP() }}</sub> = {{ resultado() }}</span>
+            </div>
+        </div>
+    </div>
+</div>

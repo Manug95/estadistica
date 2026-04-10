@@ -16,6 +16,12 @@ export class MathService {
     }, 1);
   }
 
+  multiplicarDatosBigInt(data: bigint[]): bigint {
+    return data.reduce((acumulador, actual) => {
+      return acumulador * actual;
+    }, 1n);
+  }
+
   longitud(data: number[]): number {
     return data.length;
   }
@@ -32,7 +38,15 @@ export class MathService {
     return Math.pow(base, exp);
   }
   
+  potenciaBigInt(base: bigint, exp: bigint): bigint {
+    return base**exp;
+  }
+  
   dividir(numerador: number, denominador: number): number {
+    return numerador / denominador;
+  }
+  
+  dividirBigInt(numerador: bigint, denominador: bigint): bigint {
     return numerador / denominador;
   }
 
@@ -53,6 +67,14 @@ export class MathService {
   
   aEntero(n: string): number {
     return Number.parseInt(n);
+  }
+  
+  aEnteroGrande(n: string): bigint | null {
+    try{
+      return BigInt(n);
+    } catch {
+      return null;
+    }
   }
   
   truncar(n: number): number {
@@ -79,6 +101,16 @@ export class MathService {
 
   factorial(n: number): number {
     let factorial = 1;
+
+    for (let i = n; i > 0; i--) {
+      factorial *= i;
+    }
+
+    return factorial;
+  }
+
+  factorialBigInt(n: bigint): bigint {
+    let factorial = 1n;
 
     for (let i = n; i > 0; i--) {
       factorial *= i;

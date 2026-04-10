@@ -1,0 +1,56 @@
+<form class="row justify-content-evenly" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="col-sm-3">
+        <label for="n" class="form-label">n</label>
+        <input 
+            id="n" 
+            type="text" 
+            class="form-control" 
+            [class.is-invalid]="(n!.invalid && (n!.dirty || n!.touched)) || nMenorIgualP()" 
+            formControlName="n">
+        @if ((n!.invalid && (n!.dirty || n!.touched)) || nMenorIgualP()) {
+            <div class="invalid-feedback">
+                @if (n!.hasError('required')) {
+                    <span>Ingrese el valor de n.</span>
+                }
+                @else if (n!.hasError('noEsUnBigInt')) {
+                    <span>Valor incorrecto.</span>
+                }
+                @else if (n!.hasError('esMenorIgualACero')) {
+                    <span>n NO puede ser menor o igual a 0.</span>
+                }
+                @else if (nMenorIgualP()) {
+                    <span>n no puede ser menor o igual a p.</span>
+                }
+            </div>
+        }
+    </div>
+    <div class="col-sm-3">
+        <label for="p" class="form-label">p</label>
+        <input 
+            id="p" 
+            type="text" 
+            class="form-control" 
+            [class.is-invalid]="(p!.invalid && (p!.dirty || p!.touched)) || pMayorIgualN()"
+            formControlName="p">
+        @if ((p!.invalid && (p!.dirty || p!.touched)) || pMayorIgualN()) {
+            <div class="invalid-feedback">
+                @if (p!.hasError('required')) {
+                    <span>Ingrese el valor de p.</span>
+                }
+                @else if (p!.hasError('noEsUnBigInt')) {
+                    <span>Valor incorrecto.</span>
+                }
+                @else if (p!.hasError('esMenorIgualACero')) {
+                    <span>n NO puede ser menor o igual a 0.</span>
+                }
+                @else if (pMayorIgualN()) {
+                    <span>p no puede ser mayor o igual a n.</span>
+                }
+            </div>
+        }
+    </div>
+    <div class="col-sm-3 d-flex justify-content-around align-items-end">
+        <input type="submit" class="btn btn-primary" value="Calcular" [disabled]="!form.valid && !nMenorIgualP() && !pMayorIgualN()">
+        <button type="button" class="btn btn-secondary" (click)="resetearResultados()">Resetear</button>
+    </div>
+</form>
