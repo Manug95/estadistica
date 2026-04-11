@@ -2,10 +2,11 @@ import { Component, inject, signal } from '@angular/core';
 import { MathService } from '../../services/math-service';
 import { FormularioNNs } from '../formulario-n-ns/formulario-n-ns';
 import { FormNNs } from '../../models/FormNNs';
+import { BigNumberPipe } from '../../pipes/big-number-pipe';
 
 @Component({
   selector: 'app-permutacion-c-repeticion',
-  imports: [FormularioNNs],
+  imports: [FormularioNNs, BigNumberPipe],
   templateUrl: './permutacion-c-repeticion.html',
   styleUrl: './permutacion-c-repeticion.css',
 })

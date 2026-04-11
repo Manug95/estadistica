@@ -2,10 +2,11 @@ import { Component, inject, signal } from '@angular/core';
 import { MathService } from '../../services/math-service';
 import { FormularioNP } from '../formulario-np/formulario-np';
 import { FormNP } from '../../models/FormNP';
+import { BigNumberPipe } from '../../pipes/big-number-pipe';
 
 @Component({
   selector: 'app-combinacion-c-repeticion',
-  imports: [FormularioNP],
+  imports: [FormularioNP, BigNumberPipe],
   templateUrl: './combinacion-c-repeticion.html',
   styleUrl: './combinacion-c-repeticion.css',
 })

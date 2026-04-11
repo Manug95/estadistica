@@ -1,10 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { MathService } from '../../services/math-service';
 import { FormularioN } from '../formulario-n/formulario-n';
+import { BigNumberPipe } from '../../pipes/big-number-pipe';
 
 @Component({
   selector: 'app-permutacion-simple',
-  imports: [FormularioN],
+  imports: [FormularioN, BigNumberPipe],
   templateUrl: './permutacion-simple.html',
   styleUrl: './permutacion-simple.css',
 })
