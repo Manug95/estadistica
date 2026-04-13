@@ -2,6 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { MathService } from '../../services/math-service';
 import { FormularioN } from '../formulario-n/formulario-n';
 import { BigNumberPipe } from '../../pipes/big-number-pipe';
+import { AnalisisCombinatorioService } from '../../services/analisis-combinatorio-service';
+import { RESULTADO_VACIO, N } from '../../util/constantes';
 
 @Component({
   selector: 'app-permutacion-simple',
@@ -10,29 +12,26 @@ import { BigNumberPipe } from '../../pipes/big-number-pipe';
   styleUrl: './permutacion-simple.css',
 })
 export class PermutacionSimple {
-  private mathService = inject(MathService);
+  private _mathService = inject(MathService);
+  private _analisisCombinatorioService = inject(AnalisisCombinatorioService);
   
-  subN = signal("n");
-  resultado = signal(" - ");
+  subN = signal(N);
+  resultado = signal(RESULTADO_VACIO);
 
   calcular(formValue: string): void {
     if (formValue) {
-      const n = this.mathService.aEnteroGrande(formValue);
+      const n = this._mathService.aEnteroGrande(formValue);
       
       if (n == null || n == undefined) { return; }
       
       this.subN.set(formValue);
-      this.resultado.set(this.permutacionSimple(n).toString());
+      this.resultado.set(this._analisisCombinatorioService.permutacionSimple(n).toString());
       
     }
   }
 
-  permutacionSimple(n: bigint): bigint {
-    return this.mathService.factorialBigInt(n);
-  }
-
   resetearResultados(): void {
-    this.resultado.set(" - ");
-    this.subN.set("n");
+    this.resultado.set(RESULTADO_VACIO);
+    this.subN.set(N);
   }
 }

@@ -3,6 +3,8 @@ import { MathService } from '../../services/math-service';
 import { FormularioNP } from '../formulario-np/formulario-np';
 import { FormNP } from '../../models/FormNP';
 import { BigNumberPipe } from '../../pipes/big-number-pipe';
+import { AnalisisCombinatorioService } from '../../services/analisis-combinatorio-service';
+import { RESULTADO_VACIO, N, P } from '../../util/constantes';
 
 @Component({
   selector: 'app-combinacion-simple',
@@ -11,11 +13,12 @@ import { BigNumberPipe } from '../../pipes/big-number-pipe';
   styleUrl: './combinacion-simple.css',
 })
 export class CombinacionSimple {
-  private mathService = inject(MathService);
+  private _mathService = inject(MathService);
+  private _analisisCombinatorioService = inject(AnalisisCombinatorioService);
 
-  subN = signal("n");
-  subP = signal("p");
-  resultado = signal(" - ");
+  subN = signal(N);
+  subP = signal(P);
+  resultado = signal(RESULTADO_VACIO);
   nMenorIgualP = false;
   pMayorIgualN = false;
 
@@ -23,8 +26,8 @@ export class CombinacionSimple {
     if (formValues.n && formValues.p) {
       this.nMenorIgualP = false;
       this.pMayorIgualN = false;
-      const n = this.mathService.aEnteroGrande(formValues.n);
-      const p = this.mathService.aEnteroGrande(formValues.p);
+      const n = this._mathService.aEnteroGrande(formValues.n);
+      const p = this._mathService.aEnteroGrande(formValues.p);
 
       if (!n) { return; }
       if (!p) { return; }
@@ -37,23 +40,14 @@ export class CombinacionSimple {
 
       this.subN.set(formValues.n);
       this.subP.set(formValues.p);
-      this.resultado.set(this.combinacionSimple(n, p).toString());
+      this.resultado.set(this._analisisCombinatorioService.combinacionSimple(n, p).toString());
     }
 
   }
 
-  combinacionSimple(n: bigint, p: bigint): bigint {
-    const nFactorial = this.mathService.factorialBigInt(n);
-    const pFactorial = this.mathService.factorialBigInt(p);
-    const restaFactorial = this.mathService.factorialBigInt(n - p);
-    const division = this.mathService.dividirBigInt(nFactorial, pFactorial * restaFactorial);
-
-    return division;
-  }
-
   resetearResultados(): void {
-    this.resultado.set(" - ");
-    this.subN.set("n");
-    this.subP.set("p");
+    this.resultado.set(RESULTADO_VACIO);
+    this.subN.set(N);
+    this.subP.set(P);
   }
 }

@@ -28,16 +28,16 @@ export class EstadisticaDescriptiva {
     estado: new FormControl('clasico')
   });
 
-  private datosForm: DatosForm = new DatosForm("", ";");
-  private analisisService = inject(EstadisticaDescriptivaService);
+  private _datosForm: DatosForm = new DatosForm("", ";");
+  private _analisisService = inject(EstadisticaDescriptivaService);
 
   calcular(data: DatosForm): void {
-    this.datosForm = data;
+    this._datosForm = data;
 
-    if (this.datosForm.datos) {
-      const datosFormateados = this.formatearDatos(this.datosForm.datos);
+    if (this._datosForm.datos) {
+      const datosFormateados = this.formatearDatos(this._datosForm.datos);
       datosFormateados.sort((a,b) => a-b);
-      const resultadoAnalisis: {[key: string]: number | string[]} = this.analisisService.analisisCompleto(datosFormateados);
+      const resultadoAnalisis: {[key: string]: number | string[]} = this._analisisService.analisisCompleto(datosFormateados);
       const arrayResultados = this.ordenarDatos(resultadoAnalisis);
   
       this.resultados.update(arr => { arr.push(arrayResultados); return arr; });
@@ -45,9 +45,9 @@ export class EstadisticaDescriptiva {
   }
 
   formatearDatos(datos: string): number[] {
-    if (this.datosForm.separador) {
+    if (this._datosForm.separador) {
       return datos
-      .split(this.datosForm.separador)
+      .split(this._datosForm.separador)
       .filter(x => x !== "")
       .map(x => +x);
     } else 

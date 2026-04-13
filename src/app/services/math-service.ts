@@ -99,6 +99,14 @@ export class MathService {
     return Math.max(...data);
   }
 
+  max(a: number, b: number): number {
+    return a - b > 0 ? a : b;
+  }
+
+  maxBigInt(a: bigint, b: bigint): bigint {
+    return a - b > 0 ? a : b;
+  }
+
   factorial(n: number): number {
     let factorial = 1;
 
@@ -117,5 +125,16 @@ export class MathService {
     }
 
     return factorial;
+  }
+
+  descomponerFactorial(numerador: bigint, denominador: bigint): bigint[] {
+    const numeradorDescompuesto: bigint[] = [];
+
+    while(numerador > denominador) {
+      numeradorDescompuesto.push(numerador);
+      numerador--;
+    }
+
+    return numeradorDescompuesto;
   }
 }

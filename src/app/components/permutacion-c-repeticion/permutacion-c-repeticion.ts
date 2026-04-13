@@ -3,6 +3,8 @@ import { MathService } from '../../services/math-service';
 import { FormularioNNs } from '../formulario-n-ns/formulario-n-ns';
 import { FormNNs } from '../../models/FormNNs';
 import { BigNumberPipe } from '../../pipes/big-number-pipe';
+import { AnalisisCombinatorioService } from '../../services/analisis-combinatorio-service';
+import { RESULTADO_VACIO, N, ELEMENTOS_REPETIDOS } from '../../util/constantes';
 
 @Component({
   selector: 'app-permutacion-c-repeticion',
@@ -11,15 +13,16 @@ import { BigNumberPipe } from '../../pipes/big-number-pipe';
   styleUrl: './permutacion-c-repeticion.css',
 })
 export class PermutacionCRepeticion {
-  private mathService = inject(MathService);
+  private _mathService = inject(MathService);
+  private _analisisCombinatorioService = inject(AnalisisCombinatorioService);
   
-  subN = signal("n");
-  superindices = signal<string[]>(["n1,n2,...,nk"]);
-  resultado = signal(" - ");
+  subN = signal(N);
+  superindices = signal<string[]>(ELEMENTOS_REPETIDOS);
+  resultado = signal(RESULTADO_VACIO);
 
   calcular(formValues: FormNNs): void {
     if (formValues.n && formValues.enes) {
-      const n = this.mathService.aEnteroGrande(formValues.n);
+      const n = this._mathService.aEnteroGrande(formValues.n);
       
       if (!n) { return; }
 
@@ -27,23 +30,14 @@ export class PermutacionCRepeticion {
       
       this.subN.set(formValues.n);
       this.superindices.set(enes);
-      this.resultado.set(this.permutacionConRepeticion(n, enes).toString());
+      this.resultado.set(this._analisisCombinatorioService.permutacionConRepeticion(n, enes).toString());
       
     }
-  }
-
-  permutacionConRepeticion(n: bigint, enes: string[]): bigint {
-    const nFactorial = this.mathService.factorialBigInt(n);
-    const losRepetidos = enes.map(x => this.mathService.aEnteroGrande(x));
-    const losRepetidosFactoriales = losRepetidos.map(x => this.mathService.factorialBigInt(x!));
-    const prodLosRepetidosFactoriales = this.mathService.multiplicarDatosBigInt(losRepetidosFactoriales);
-
-    return this.mathService.dividirBigInt(nFactorial, prodLosRepetidosFactoriales);
   }
 
   resetearResultados(): void {
     this.resultado.set(" - ");
     this.subN.set("n");
-    this.superindices.set(["n1,n2,...,nk"]);
+    this.superindices.set(ELEMENTOS_REPETIDOS);
   }
 }

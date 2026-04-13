@@ -6,17 +6,17 @@ import { MathService } from './math-service';
   providedIn: 'root',
 })
 export class EstadisticaDescriptivaService {
-  private mathService = inject(MathService);
+  private _mathService = inject(MathService);
 
   media(data: number[]): number {
-    return this.mathService.redondear(
-      this.mathService.dividir(this.mathService.sumarDatos(data), this.mathService.longitud(data))
+    return this._mathService.redondear(
+      this._mathService.dividir(this._mathService.sumarDatos(data), this._mathService.longitud(data))
       , 2);
   }
   
   mediana(data: number[]): number {
   
-    if (this.mathService.esLongitudPar(data))
+    if (this._mathService.esLongitudPar(data))
       return this.medianaPar(data);
     else
       return this.medianaImpar(data);
@@ -39,7 +39,7 @@ export class EstadisticaDescriptivaService {
   cuartil_1(data: number[]): number {
     const mitadIzquierda = data
       .filter(x => x <= this.mediana(data))
-      .slice(0, this.mathService.dividir(this.mathService.longitud(data), 2));
+      .slice(0, this._mathService.dividir(this._mathService.longitud(data), 2));
     return this.mediana(mitadIzquierda);
   }
   
@@ -50,13 +50,13 @@ export class EstadisticaDescriptivaService {
   cuartil_3(data: number[]): number {
     const mitadDerecha = data
       .filter(x => x >= this.mediana(data))
-      .slice(this.mathService.dividir(this.mathService.longitud(data), 2) * (-1));
+      .slice(this._mathService.dividir(this._mathService.longitud(data), 2) * (-1));
     return this.mediana(mitadDerecha);
   }
 
   rango(data: number[]): number {
-    const max = this.mathService.valorMaximo(data);
-    const min = this.mathService.valorMinimo(data);
+    const max = this._mathService.valorMaximo(data);
+    const min = this._mathService.valorMinimo(data);
   
     return max - min;
   }
@@ -70,33 +70,33 @@ export class EstadisticaDescriptivaService {
 
   variancia(data: number[]): number {
     const laMedia = this.media(data);
-    const diferencias = data.map(x => this.mathService.potencia((x - laMedia), 2));
-    const suma = this.mathService.sumarDatos(diferencias);
-    const resultado = this.mathService.dividir(suma, this.mathService.longitud(data) - 1);
+    const diferencias = data.map(x => this._mathService.potencia((x - laMedia), 2));
+    const suma = this._mathService.sumarDatos(diferencias);
+    const resultado = this._mathService.dividir(suma, this._mathService.longitud(data) - 1);
   
-    return this.mathService.redondear(resultado, 2);
+    return this._mathService.redondear(resultado, 2);
   }
   
   desviacionEstandar(data: number[]): number {
-    const desviacion = this.mathService.raizCuadrada(this.variancia(data));
+    const desviacion = this._mathService.raizCuadrada(this.variancia(data));
   
-    return this.mathService.redondear(desviacion, 2);
+    return this._mathService.redondear(desviacion, 2);
   }
   
   coeficienteDeVariacion(data: number[]): number {
-    const cociente = this.mathService.dividir(this.desviacionEstandar(data), this.media(data));
+    const cociente = this._mathService.dividir(this.desviacionEstandar(data), this.media(data));
     const porcentaje = cociente * 100;
   
-    return this.mathService.redondear(porcentaje, 2);
+    return this._mathService.redondear(porcentaje, 2);
   }
 
   medianaPar(data: number[]): number {
-    const pos = this.mathService.dividir(this.mathService.longitud(data), 2);
-    return this.mathService.dividir(data[pos-1] + data[pos], 2);
+    const pos = this._mathService.dividir(this._mathService.longitud(data), 2);
+    return this._mathService.dividir(data[pos-1] + data[pos], 2);
   }
   
   medianaImpar(data: number[]): number {
-    const pos = this.mathService.dividir(this.mathService.longitud(data) + 1, 2);
+    const pos = this._mathService.dividir(this._mathService.longitud(data) + 1, 2);
     return data[pos-1]
   }
 
@@ -117,12 +117,12 @@ export class EstadisticaDescriptivaService {
   //para la MODA
   //busco el valor mas grande (cantidad mas grande que se repite alguno valor)
   mayorRepeticion(data: Object): number {
-    return this.mathService.valorMaximo(Object.values(data));
+    return this._mathService.valorMaximo(Object.values(data));
   }
 
   analisisCompleto(data: number[]): {[key: string]: number | string[]} {
     return {
-      n: this.mathService.longitud(data),
+      n: this._mathService.longitud(data),
       media: this.media(data),
       mediana: this.mediana(data),
       moda: this.moda(data),
@@ -134,8 +134,8 @@ export class EstadisticaDescriptivaService {
       variancia: this.variancia(data),
       desviacionEstandar: this.desviacionEstandar(data),
       coeficienteDeVariacion: [this.coeficienteDeVariacion(data) + "%"],
-      max: this.mathService.valorMaximo(data),
-      min: this.mathService.valorMinimo(data)
+      max: this._mathService.valorMaximo(data),
+      min: this._mathService.valorMinimo(data)
     }
   }
 }

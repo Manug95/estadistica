@@ -6,6 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class BigNumberPipe implements PipeTransform {
   transform(value: bigint | string | number): string {
     if (!value) return '0';
+    if (value === " - ") return value;
     
     const bigIntValue = BigInt(value);
     

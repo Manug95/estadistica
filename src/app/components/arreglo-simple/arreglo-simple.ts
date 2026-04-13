@@ -3,6 +3,8 @@ import { MathService } from '../../services/math-service';
 import { FormularioNP } from '../formulario-np/formulario-np';
 import { FormNP } from '../../models/FormNP';
 import { BigNumberPipe } from '../../pipes/big-number-pipe';
+import { AnalisisCombinatorioService } from '../../services/analisis-combinatorio-service';
+import { RESULTADO_VACIO, N, P } from '../../util/constantes';
 
 @Component({
   selector: 'app-arreglo-simple',
@@ -11,11 +13,12 @@ import { BigNumberPipe } from '../../pipes/big-number-pipe';
   styleUrl: './arreglo-simple.css',
 })
 export class ArregloSimple {
-  private mathService = inject(MathService);
+  private _mathService = inject(MathService);
+  private _analisisCombinatorioService = inject(AnalisisCombinatorioService);
 
-  subN = signal("n");
-  subP = signal("p");
-  resultado = signal(" - ");
+  subN = signal(N);
+  subP = signal(P);
+  resultado = signal(RESULTADO_VACIO);
   nMenorIgualP = false;
   pMayorIgualN = false;
 
@@ -24,8 +27,8 @@ export class ArregloSimple {
       this.nMenorIgualP = false;
       this.pMayorIgualN = false;
       
-      const n = this.mathService.aEnteroGrande(formValues.n);
-      const p = this.mathService.aEnteroGrande(formValues.p);
+      const n = this._mathService.aEnteroGrande(formValues.n);
+      const p = this._mathService.aEnteroGrande(formValues.p);
       
       if (!n) { return; }
       if (!p) { return; }
@@ -38,26 +41,14 @@ export class ArregloSimple {
       
       this.subN.set(formValues.n);
       this.subP.set(formValues.p);
-      this.resultado.set(this.arregloSimple(n, p).toString());
+      this.resultado.set(this._analisisCombinatorioService.arregloSimple(n, p).toString());
       
     }
   }
 
-  arregloSimple(n: bigint, p: bigint): bigint {
-    let result = 1n;
-    let i = n;
-
-    while (i >= (n - p + 1n)) {
-      result *= i;
-      i--;
-    }
-
-    return result;
-  }
-
   resetearResultados(): void {
-    this.resultado.set(" - ");
-    this.subN.set("n");
-    this.subP.set("p");
+    this.resultado.set(RESULTADO_VACIO);
+    this.subN.set(N);
+    this.subP.set(P);
   }
 }
